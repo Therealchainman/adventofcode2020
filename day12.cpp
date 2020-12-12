@@ -47,7 +47,7 @@ void updateWayPoint(ll delta, char d) {
 }
 
 void rotation(ll delta, char orientation) {
-    int i = delta/90;
+    ll i = mod(delta/90,4);
     ll nx, ny;
     int R, L;
     R = orientation == 'R' ? 1 : 0;
