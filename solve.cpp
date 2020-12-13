@@ -30,8 +30,8 @@
 #define inf 0x3f3f3f3f3f3f3f3f
 #define mxl INT64_MAX
 #define mnl INT64_MIN
-#define mx INT_MAX
-#define mn INT_MIN
+#define mx INT32_MAX
+#define mn INT32_MIN
 #define endl '\n'
 using namespace std;
 
@@ -138,6 +138,22 @@ ll mod (ll a, ll b) {
 
 int main() {
 
-    freopen("inputDay12.txt","r",stdin);
+    freopen("inputDay13.txt","r",stdin);
+    string buses;
+    cin >>buses;
+    istringstream s(buses);
+    string bus;
+    vector<vector<ll>> times;
+    int offset = -1;
+
+    while (getline(s,bus,',')) {
+        offset++;
+        if (bus=="x") {
+            continue;
+        } 
+        ll val = stoi(bus);
+        times.push_back({val,offset});
+    }
+    cout<<solve(times)<<endl;
     return 0;
 }
