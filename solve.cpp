@@ -138,22 +138,63 @@ ll mod (ll a, ll b) {
 
 int main() {
 
-    freopen("inputDay13.txt","r",stdin);
-    string buses;
-    cin >>buses;
-    istringstream s(buses);
-    string bus;
-    vector<vector<ll>> times;
-    int offset = -1;
-
-    while (getline(s,bus,',')) {
-        offset++;
-        if (bus=="x") {
-            continue;
-        } 
-        ll val = stoi(bus);
-        times.push_back({val,offset});
+    freopen("inputDay14.txt","r",stdin);
+    string input,tmp;
+    string mask = "";
+    vector<ll> memories;
+    while (getline(cin,input)) {
+        istringstream s(input);
+        vector<string> inputs;
+        while (getline(s,tmp,' ')) {
+            inputs.push_back(tmp);
+        }
+        if (inputs[0]=="mask") {
+            solve(mask, memories);
+            mask = inputs[2];
+            reverse(mask.begin(),mask.end());
+            memories.clear();
+        } else {
+            int n = inputs[0].size();
+            string key;
+            bool start = false;
+            for (int i = 0;i<n;i++) {
+                if (inputs[0][i]==']') {
+                    continue;
+                }
+                if (inputs[0][i]=='[') {
+                    start = true;
+                } else if (start) {
+                    key+=inputs[0][i];
+                }
+            }
+            ll intKey = stoi(key);
+            ll intVal = stoi(inputs[2]);
+            memories.push_back(intKey);
+            memMap[intKey]=intVal;
+        }
     }
-    cout<<solve(times)<<endl;
+    solve(mask,memories);
+    cout<<sum(results)<<endl;
     return 0;
 }
+
+/*
+if xxxx there are 
+0000
+1000
+0100
+0010
+0001
+1100
+1010
+1001
+0110
+0101
+0011
+1110
+1101
+1011
+0111
+1111
+
+*/
