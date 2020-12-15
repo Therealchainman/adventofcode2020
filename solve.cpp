@@ -6,6 +6,7 @@
 #include <vector>
 #include <regex>
 #include <set>
+#include <chrono>
 #include <map>
 #include <unordered_set>
 #include <unordered_map>
@@ -34,6 +35,7 @@
 #define mn INT32_MIN
 #define endl '\n'
 using namespace std;
+using namespace std::chrono;
 
 ll mod (ll a, ll b) {
     return (a % b + b) %b;
@@ -136,65 +138,51 @@ ll mod (ll a, ll b) {
 //     return 0;
 // }
 
+int solve(vector<int> nums, int end) {
+    int n = nums.size();
+    unordered_map<int,int> posNum;
+    int curNum;
+    int i;
+    for (i = 0;i<n;i++) {
+        posNum[nums[i]]=i;
+        curNum=nums[i];
+    }
+    int nextNum = 0;
+    int count[10];
+    while (i<end) {
+        curNum=nextNum;
+        if (posNum.find(nextNum)==posNum.end()) {\
+            nextNum = 0;
+            posNum[curNum]=i;
+        } else {
+            int prevIndex = posNum[curNum];
+            int curIndex = i;
+            posNum[curNum]=curIndex;
+            nextNum=curIndex-prevIndex;
+        }
+        i++;
+    }
+    return curNum;
+}
+
 int main() {
 
-    freopen("inputDay14.txt","r",stdin);
+    freopen("big.txt","r",stdin);
     string input,tmp;
-    string mask = "";
-    vector<ll> memories;
+    vector<int> starting_nums;
     while (getline(cin,input)) {
         istringstream s(input);
         vector<string> inputs;
-        while (getline(s,tmp,' ')) {
-            inputs.push_back(tmp);
-        }
-        if (inputs[0]=="mask") {
-            solve(mask, memories);
-            mask = inputs[2];
-            reverse(mask.begin(),mask.end());
-            memories.clear();
-        } else {
-            int n = inputs[0].size();
-            string key;
-            bool start = false;
-            for (int i = 0;i<n;i++) {
-                if (inputs[0][i]==']') {
-                    continue;
-                }
-                if (inputs[0][i]=='[') {
-                    start = true;
-                } else if (start) {
-                    key+=inputs[0][i];
-                }
-            }
-            ll intKey = stoi(key);
-            ll intVal = stoi(inputs[2]);
-            memories.push_back(intKey);
-            memMap[intKey]=intVal;
+        while (getline(s,tmp,',')) {
+            int x = stoi(tmp);
+            starting_nums.push_back(x);
         }
     }
-    solve(mask,memories);
-    cout<<sum(results)<<endl;
+    auto start = high_resolution_clock::now();
+    int res = solve(starting_nums,30000000);
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<seconds>(stop-start);
+    cout<<duration.count()<<endl;
+    cout<<res<<endl;
     return 0;
 }
-
-/*
-if xxxx there are 
-0000
-1000
-0100
-0010
-0001
-1100
-1010
-1001
-0110
-0101
-0011
-1110
-1101
-1011
-0111
-1111
-
-*/
