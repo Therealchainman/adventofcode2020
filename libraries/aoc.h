@@ -45,138 +45,138 @@ ll mod (ll a, ll b) {
 
 
 // Used on day 17 of challenge
-struct p3 {
-    int x, y, z;
-    p3() : x(0), y(0), z(0) {}
-    p3(int x, int y, int z) : x(x), y(y), z(z) {}
+// struct p3 {
+//     int x, y, z;
+//     p3() : x(0), y(0), z(0) {}
+//     p3(int x, int y, int z) : x(x), y(y), z(z) {}
 
-    p3& operator+= (const p3 &b) {
-        x+b.x;
-        y+b.y;
-        z+b.z;
-        return *this;
-    }
+//     p3& operator+= (const p3 &b) {
+//         x+b.x;
+//         y+b.y;
+//         z+b.z;
+//         return *this;
+//     }
 
-    p3& operator-= (const p3 &b) {
-        x-b.x;
-        y-b.y;
-        z-b.z;
-        return *this;
-    }
+//     p3& operator-= (const p3 &b) {
+//         x-b.x;
+//         y-b.y;
+//         z-b.z;
+//         return *this;
+//     }
 
-    int& operator[] (int index) {
-        if (index == 0) {
-            return x;
-        } 
-        if (index == 1) {
-            return y;
-        }
-        return z;
-    }
-    int operator[] (int index) const {
-        if (index == 0) {
-            return x;
-        } 
-        if (index == 1) {
-            return y;
-        }
-        return z;
-    }
-};
+//     int& operator[] (int index) {
+//         if (index == 0) {
+//             return x;
+//         } 
+//         if (index == 1) {
+//             return y;
+//         }
+//         return z;
+//     }
+//     int operator[] (int index) const {
+//         if (index == 0) {
+//             return x;
+//         } 
+//         if (index == 1) {
+//             return y;
+//         }
+//         return z;
+//     }
+// };
 
-bool operator == (const p3 &a, const p3 &b) {
-    return a.x==b.x && a.y==b.y && a.z==b.z;
-}
-bool operator > (const p3 &a, const p3 &b) {
-    return a.x!=b.x ? a.x>b.x : a.y!=b.y ? a.y>b.y : a.z<b.z;
-}
-bool operator < (const p3 &a, const p3 &b) {
-    return b>a;
-}
-bool operator != (const p3 &a, const p3 &b) {
-    return !(a==b);
-}
-bool operator >= (const p3 &a, const p3 &b) {
-    return !(a<b);
-}
-bool operator <= (const p3 &a, const p3 &b) {
-    return !(a>b);
-}
-p3 operator + (const p3 &a, const p3 &b) {
-    return p3(a.x+b.x,a.y+b.y,a.z+b.z);
-}
-p3 operator - (const p3 &a, const p3 &b) {
-    return p3(a.x-b.x,a.y-b.y,a.z-b.z);
-}
+// bool operator == (const p3 &a, const p3 &b) {
+//     return a.x==b.x && a.y==b.y && a.z==b.z;
+// }
+// bool operator > (const p3 &a, const p3 &b) {
+//     return a.x!=b.x ? a.x>b.x : a.y!=b.y ? a.y>b.y : a.z<b.z;
+// }
+// bool operator < (const p3 &a, const p3 &b) {
+//     return b>a;
+// }
+// bool operator != (const p3 &a, const p3 &b) {
+//     return !(a==b);
+// }
+// bool operator >= (const p3 &a, const p3 &b) {
+//     return !(a<b);
+// }
+// bool operator <= (const p3 &a, const p3 &b) {
+//     return !(a>b);
+// }
+// p3 operator + (const p3 &a, const p3 &b) {
+//     return p3(a.x+b.x,a.y+b.y,a.z+b.z);
+// }
+// p3 operator - (const p3 &a, const p3 &b) {
+//     return p3(a.x-b.x,a.y-b.y,a.z-b.z);
+// }
 
-struct p4 {
-    int x, y, z,w;
-    p4() : x(0), y(0), z(0), w(0) {}
-    p4(int x, int y, int z, int w) : x(x), y(y), z(z), w(w) {}
+// struct p4 {
+//     int x, y, z,w;
+//     p4() : x(0), y(0), z(0), w(0) {}
+//     p4(int x, int y, int z, int w) : x(x), y(y), z(z), w(w) {}
 
-    p4& operator+= (const p4 &b) {
-        x+b.x;
-        y+b.y;
-        z+b.z;
-        w+b.w;
-        return *this;
-    }
+//     p4& operator+= (const p4 &b) {
+//         x+b.x;
+//         y+b.y;
+//         z+b.z;
+//         w+b.w;
+//         return *this;
+//     }
 
-    p4& operator-= (const p4 &b) {
-        x-b.x;
-        y-b.y;
-        z-b.z;
-        w-b.w;
-        return *this;
-    }
+//     p4& operator-= (const p4 &b) {
+//         x-b.x;
+//         y-b.y;
+//         z-b.z;
+//         w-b.w;
+//         return *this;
+//     }
 
-    int& operator[] (int index) {
-        if (index == 0) {
-            return x;
-        } 
-        if (index == 1) {
-            return y;
-        } 
-        if (index == 2) {
-            return z;
-        }
-        return w;
-    }
-    int operator[] (int index) const {
-        if (index == 0) {
-            return x;
-        } 
-        if (index == 1) {
-            return y;
-        }
-        if (index == 2) {
-            return z;
-        }
-        return w;
-    }
-};
+//     int& operator[] (int index) {
+//         if (index == 0) {
+//             return x;
+//         } 
+//         if (index == 1) {
+//             return y;
+//         } 
+//         if (index == 2) {
+//             return z;
+//         }
+//         return w;
+//     }
+//     int operator[] (int index) const {
+//         if (index == 0) {
+//             return x;
+//         } 
+//         if (index == 1) {
+//             return y;
+//         }
+//         if (index == 2) {
+//             return z;
+//         }
+//         return w;
+//     }
+// };
 
-bool operator == (const p4 &a, const p4 &b) {
-    return a.x==b.x && a.y==b.y && a.z==b.z && a.w==b.w;
-}
-bool operator > (const p4 &a, const p4 &b) {
-    return a.x!=b.x ? a.x>b.x : a.y!=b.y ? a.y>b.y : a.z!=b.z ? a.z>b.z : a.w>b.w;
-}
-bool operator < (const p4 &a, const p4 &b) {
-    return b>a;
-}
-bool operator != (const p4 &a, const p4 &b) {
-    return !(a==b);
-}
-bool operator >= (const p4 &a, const p4 &b) {
-    return !(a<b);
-}
-bool operator <= (const p4 &a, const p4 &b) {
-    return !(a>b);
-}
-p4 operator + (const p4 &a, const p4 &b) {
-    return p4(a.x+b.x,a.y+b.y,a.z+b.z,a.w+b.w);
-}
-p4 operator - (const p4 &a, const p4 &b) {
-    return p4(a.x-b.x,a.y-b.y,a.z-b.z,a.w-b.w);
-}
+// bool operator == (const p4 &a, const p4 &b) {
+//     return a.x==b.x && a.y==b.y && a.z==b.z && a.w==b.w;
+// }
+// bool operator > (const p4 &a, const p4 &b) {
+//     return a.x!=b.x ? a.x>b.x : a.y!=b.y ? a.y>b.y : a.z!=b.z ? a.z>b.z : a.w>b.w;
+// }
+// bool operator < (const p4 &a, const p4 &b) {
+//     return b>a;
+// }
+// bool operator != (const p4 &a, const p4 &b) {
+//     return !(a==b);
+// }
+// bool operator >= (const p4 &a, const p4 &b) {
+//     return !(a<b);
+// }
+// bool operator <= (const p4 &a, const p4 &b) {
+//     return !(a>b);
+// }
+// p4 operator + (const p4 &a, const p4 &b) {
+//     return p4(a.x+b.x,a.y+b.y,a.z+b.z,a.w+b.w);
+// }
+// p4 operator - (const p4 &a, const p4 &b) {
+//     return p4(a.x-b.x,a.y-b.y,a.z-b.z,a.w-b.w);
+// }

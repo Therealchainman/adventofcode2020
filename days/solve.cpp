@@ -156,23 +156,28 @@ ll solve(puzzleInput p) {
             }
         }
     }
+    /*
+    This code is intended to basically intended to find the columns that have so on and so on.  This is 
+    very challenging though.  
+    */
     set<rule> usedRules;
     while (true) {
-    map<int, set<rule>>::iterator it = find_if(rulesByCols.begin(),rulesByCols.end(),
-    [p](set<rule> setRules) {
-        return setRules.size()==1;
-    });
-    if (*it==rulesByCols.end()) {
-        break;
-    }
-    rule curRule = *it->second.begin();
-    usedRules.insert(curRule);
-    for_each(rulesByCols.begin(),rulesByCols.end(), 
-    [curRule] (pair<const int,set<rule>> rs) {
-        if (rs.second.size()>1) {
-            rs.second.erase(curRule);
+        // focus on understanding this code.  
+        map<int, set<rule>>::iterator it = find_if(rulesByCols.begin(),rulesByCols.end(),
+        [&usedRules] (pair<int,set<rule>> elem) {
+            return elem.second.size()==1;
+        });
+        if (it==rulesByCols.end()) {
+            break;
         }
-    });
+        rule curRule = *it->second.begin();
+        usedRules.insert(curRule);
+        for_each(rulesByCols.begin(),rulesByCols.end(), 
+        [curRule] (pair<const int,set<rule>> rs) {
+            if (rs.second.size()>1) {
+                rs.second.erase(curRule);
+            }
+        });
     }
 
     ll res = 1;
