@@ -180,3 +180,12 @@ ll mod (ll a, ll b) {
 // p4 operator - (const p4 &a, const p4 &b) {
 //     return p4(a.x-b.x,a.y-b.y,a.z-b.z,a.w-b.w);
 // }
+
+// Using for day 18
+ll evaluate(ll x, ll y, char oper) {
+    return oper == '+' ? x + y : x*y;
+}
+
+struct number {
+    vector<string> lines;
+};
