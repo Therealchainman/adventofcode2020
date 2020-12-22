@@ -1,36 +1,5 @@
 #include "../libraries/aoc.h"
 
-
-struct Deck {
-   deque<ll> cards;
-};
-
-bool operator == (const Deck &a, const Deck &b) {
-    return a.cards==b.cards;
-}
-
-struct Player {
-    int id=0;
-    Deck deck;
-};
-
-bool operator == (const Player &a, const Player &b)  {
-    return a.id==b.id && a.deck==b.deck;
-}
-bool operator < (const Player &a, const Player &b) {
-    return a.id < b.id;
-}
-bool operator > (const Player &a, const Player &b) {
-    return !(a<b);
-}
-bool operator != (const Player &a, const Player &b) {
-    return !(a==b);
-}
-struct Game {
-    vector<Player> players;
-    Player winner;
-};
-
 map<pair<deque<ll>,deque<ll>>, Player> memo;
 
 ll score(Game g) {
