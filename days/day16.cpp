@@ -1,45 +1,4 @@
-#include <iostream>
-#include <cstdio>
-#include <cstdlib>
-#include <algorithm>
-#include <cmath>
-#include <vector>
-#include <regex>
-#include <set>
-#include <chrono>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <queue>
-#include <ctime>
-#include <cassert>
-#include <complex>
-#include <string>
-#include <cstring>
-#include <chrono>
-#include <random>
-#include <array>
-#include <bitset>
-#define rep(i,n) for (i = 0; i < n; ++i) 
-#define REP(i,k,n) for (i = k; i <= n; ++i) 
-#define REPR(i,k,n) for (i = k; i >= n; --i)
-#define pb push_back
-#define all(a) a.begin(), a.end()
-#define fastio ios::sync_with_stdio(0); cin.tie(0); cout.tie(0)
-#define ll long long 
-#define uint unsigned long long
-#define inf 0x3f3f3f3f3f3f3f3f
-#define mxl INT64_MAX
-#define mnl INT64_MIN
-#define mx INT32_MAX
-#define mn INT32_MIN
-#define endl '\n'
-using namespace std;
-using namespace std::chrono;
-
-ll mod (ll a, ll b) {
-    return (a % b + b) %b;
-}
+#include "../libraries/aoc.h"
 
 // Part 1
 int solve(vector<int> values, vector<pair<int,int>> ranges) {
@@ -81,57 +40,57 @@ vector<pair<int,int>> mergeRanges(vector<pair<int,int>> ranges) {
     return res;
 }
 
-int main() {
+// int main() {
 
-    freopen("big.txt","r",stdin);
-    string input,tmp;
-    vector<pair<int,int>> ranges;
-    vector<int> values;
-    while (getline(cin,input)) {
-        if (input == "your ticket:") {
-            break;
-        }
-        istringstream s(input);
-        int j = 0;
-        while (getline(s,tmp,' ')) {
-            int i = 0;
-            if (!isdigit(tmp[i])) {
-                continue;
-            }
-            string startstr = "";
-            while (isdigit(tmp[i])) {
-                startstr+=tmp[i++];
-            }
-            int start = stoi(startstr);
-            i++;
-            string endstr = "";
-            while (isdigit(tmp[i])) {
-                endstr+=tmp[i++];
-            }
-            int end = stoi(endstr);
-            ranges.emplace_back(start,end);
-        }
-    }
-    for (int i = 0;i<3;i++) {
-        getline(cin,input);
-    }
-    while (getline(cin,input)) {
-        istringstream s(input);
-        while (getline(s,tmp,',')) {
-            int x = stoi(tmp);
-            values.push_back(x);
-        }
-    }
-    sort(values.begin(),values.end());
-    // auto start = high_resolution_clock::now();
-    ranges = mergeRanges(ranges);
-    int res = solve(values, ranges);
-    // auto stop = high_resolution_clock::now();
-    // auto duration = duration_cast<seconds>(stop-start);
-    // cout<<duration.count()<<endl;
-    cout<<res<<endl;
-    return 0;
-}
+//     freopen("big.txt","r",stdin);
+//     string input,tmp;
+//     vector<pair<int,int>> ranges;
+//     vector<int> values;
+//     while (getline(cin,input)) {
+//         if (input == "your ticket:") {
+//             break;
+//         }
+//         istringstream s(input);
+//         int j = 0;
+//         while (getline(s,tmp,' ')) {
+//             int i = 0;
+//             if (!isdigit(tmp[i])) {
+//                 continue;
+//             }
+//             string startstr = "";
+//             while (isdigit(tmp[i])) {
+//                 startstr+=tmp[i++];
+//             }
+//             int start = stoi(startstr);
+//             i++;
+//             string endstr = "";
+//             while (isdigit(tmp[i])) {
+//                 endstr+=tmp[i++];
+//             }
+//             int end = stoi(endstr);
+//             ranges.emplace_back(start,end);
+//         }
+//     }
+//     for (int i = 0;i<3;i++) {
+//         getline(cin,input);
+//     }
+//     while (getline(cin,input)) {
+//         istringstream s(input);
+//         while (getline(s,tmp,',')) {
+//             int x = stoi(tmp);
+//             values.push_back(x);
+//         }
+//     }
+//     sort(values.begin(),values.end());
+//     // auto start = high_resolution_clock::now();
+//     ranges = mergeRanges(ranges);
+//     int res = solve(values, ranges);
+//     // auto stop = high_resolution_clock::now();
+//     // auto duration = duration_cast<seconds>(stop-start);
+//     // cout<<duration.count()<<endl;
+//     cout<<res<<endl;
+//     return 0;
+// }
 
 // part 2
 struct rule {
@@ -175,10 +134,10 @@ ll solve(puzzleInput p) {
     })
     , p.nearByTickets.end());
 
-    map<int, set<rule>> rulesByCols;
+    map<int, set<rule*>> rulesByCols;
     bool valid;
     for (int c = 0;c<p.myTicket.size();c++) {
-        for (rule r : p.rules) {
+        for (rule& r : p.rules) {
             valid = true;
             for (vector<int> curTicket : p.nearByTickets) {
                 bool ticketValid = r.valueIsValid(curTicket[c]);
@@ -188,32 +147,32 @@ ll solve(puzzleInput p) {
                 }
             }
             if (valid) {
-                rulesByCols[c].insert(r);
+                rulesByCols[c].insert(&r);
             }
         }
     }
-    set<rule> usedRules;
+    set<rule*> usedRules;
     while (true) {
-    map<int, set<rule>>::iterator it = find_if(rulesByCols.begin(),rulesByCols.end(),
-    [p](set<rule> setRules) {
-        return setRules.size()==1;
-    });
-    if (*it==rulesByCols.end()) {
-        break;
-    }
-    rule curRule = *it->second.begin();
-    usedRules.insert(curRule);
-    for_each(rulesByCols.begin(),rulesByCols.end(), 
-    [curRule] (pair<const int,set<rule>> rs) {
-        if (rs.second.size()>1) {
-            rs.second.erase(curRule);
+        auto it = find_if(rulesByCols.begin(),rulesByCols.end(),
+        [&usedRules](pair<const int, set<rule*>> &rule) {
+            return rule.second.size()==1 && !usedRules.count(*rule.second.begin());;
+        });
+        if (it==rulesByCols.end()) {
+            break;
         }
-    });
+        rule* curRule = *it->second.begin();
+        usedRules.insert(curRule);
+        for_each(rulesByCols.begin(),rulesByCols.end(), 
+        [curRule] (pair<const int,set<rule*>> &rs) {
+            if (rs.second.size()>1) {
+                rs.second.erase(curRule);
+            }
+        });
     }
 
     ll res = 1;
     for (int i = 0;i<p.myTicket.size();i++) {
-        if (rulesByCols[i].size()==1 && rulesByCols[i].begin()->isDeparture) {
+        if (rulesByCols[i].size()==1 && (*rulesByCols[i].begin())->isDeparture) {
             res*=p.myTicket[i];
         }
     }
@@ -223,7 +182,7 @@ ll solve(puzzleInput p) {
 
 int main() {
 
-    freopen("big.txt","r",stdin);
+    freopen("inputs/big.txt","r",stdin);
     string input,tmp;
     puzzleInput pInput;
     int section = 0, ticketNum;
