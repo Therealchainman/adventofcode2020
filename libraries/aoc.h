@@ -221,7 +221,7 @@ bool operator > (const Player &a, const Player &b) {
 bool operator != (const Player &a, const Player &b) {
     return !(a==b);
 }
-struct Game {
-    vector<Player> players;
-    Player winner;
-};
+// struct Game {
+//     vector<Player> players;
+//     Player winner;
+// };
