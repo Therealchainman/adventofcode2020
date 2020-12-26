@@ -1,98 +1,165 @@
 #include "../libraries/aoc.h"
 
+struct Node {
+    Node* next;
+    ll val;
+};
+
 struct Cups {
-    vector<ll> cups;
+    Node* cups;
+    vector<Node*> indexVec;
+
+    explicit Cups() {
+        vector<Node*> indices(1000001, new Node);
+        indexVec = indices;
+    }
 };
 
 struct Game {
     Cups c;
-    ll destination;
-    ll indexD;
-    set<ll> pickedUp;
-    ll move;
-    vector<ll> picked;
-    ll curIndex;
+    ll destVal;
+    Node* rmNode;
+    Node* destNode;
+    set<ll> picked;
 };
 
 Game g;
 
-string playGame() {
-    ll n = g.c.cups.size();
-    while (g.move<100) {
-        ll curCup = g.c.cups[g.curIndex];
-        for (ll j = 1;j<=3;j++) {
-            g.pickedUp.insert(g.c.cups[mod(g.curIndex+j,n)]);
-            g.picked.push_back(g.c.cups[mod(g.curIndex+j,n)]);
+void playGame(bool part2) {
+    Node* next;
+    Node* head;
+    head = g.c.cups;
+    if (part2) {
+        for (int i = 0;i<8;i++) {
+            g.c.cups=g.c.cups->next;
         }
-        for (int i = 0;i<3;i++) {
-            vector<ll>::iterator it = find(g.c.cups.begin(),g.c.cups.end(),g.picked[i]);
-            g.c.cups.erase(it,it+1);
+        for (int i = 10;i<=1000000;i++) {
+            next = new Node;
+            next->val = i;
+            g.c.cups->next=next;
+            g.c.cups = g.c.cups->next;
+            g.c.indexVec[next->val] = next;
         }
-        assert(g.pickedUp.size()==3);
-        g.destination = curCup-1==0 ? 9 : curCup-1;
-        while (g.pickedUp.count(g.destination)>0) {
-            g.destination--;
-            if (g.destination==0) {
-                g.destination=9;
-            }
-        }
-        for (int i = 0;i<g.c.cups.size();i++) {
-            if (g.destination==g.c.cups[i]) {
-                g.indexD=i+1;
-                break;
-            }
-        }
-        g.indexD = mod(g.indexD,n);
-        assert(g.pickedUp.count(g.destination)==0);
-        assert(g.c.cups.size()==6);
-        for (int i = 0;i<3;i++) {
-            g.c.cups.insert(g.c.cups.begin()+g.indexD,g.picked[i]);
-            g.indexD++;
-            g.indexD=mod(g.indexD,n);
+        g.c.cups->next = head;
+    }
+    ll moves = part2 ? 10000000 : 100;
+    Node* curCup = head;
+    Node* curNode;
+    Node* lastNode;
+    Node* afterDestNode;
+    // cout<<g.c.indexVec[1000000]->next->val<<endl;
+    for (int j = 0;j<moves;j++) {
+        // Removing my three nodes
+        // cout<<"move: "<<j+1<<endl;
 
+        curNode = curCup->next;
+        // if (j>249990) {
+        //     cout<<"Current cup: "<<curCup->val<<endl;
+        //     cout<<"Next node:" <<curNode->val<<endl;
+        // }
+        g.rmNode = curNode;
+        for (int i = 0;i<3;i++) {
+            g.picked.insert(curNode->val);
+            lastNode = curNode;
+            curNode = curNode->next;
         }
-        for (int i = 0;i<g.c.cups.size();i++) {
-            if (g.c.cups[i]==curCup) {
-                g.curIndex = i + 1;
-                break;
+        if (part2) {
+            g.destVal = curCup->val-1==0 ? 1000000 : curCup->val-1;
+        } else {
+            g.destVal = curCup->val-1==0 ? 9: curCup->val-1;
+        }
+        curCup->next = curNode;
+        lastNode->next = nullptr;
+        // Searching for the destination value
+        while (g.picked.count(g.destVal)>0) {
+            g.destVal--;
+            if (g.destVal==0) {
+                g.destVal= part2 ? 1000000 : 9;
             }
         }
-        assert(g.c.cups.size()==9);
-        g.move++;
-        g.pickedUp.clear();
-        g.picked.clear();
-        g.curIndex=mod(g.curIndex,n);
-    }
-    set<ll> visited;
-    ll start;
-    for (start=0;start<n;start++) {
-        if (g.c.cups[start]==1) {
-            break;
+        // Insert the three nodes after the destination node. 
+        g.destNode = g.c.indexVec[g.destVal];
+
+        afterDestNode = g.destNode->next;
+        // if (j>249990) {
+        //     cout<<"Destination node: "<<g.destNode->val<<endl;
+        //     cout<<"Last removed node: "<<lastNode->val<<endl;
+        //     cout<<"Node after destinaton: "<<afterDestNode->val<<endl;
+        // }
+
+        g.destNode->next = g.rmNode;
+        while (g.rmNode->next!=nullptr) {
+            g.rmNode = g.rmNode->next;
         }
+        g.rmNode->next = afterDestNode;
+        g.picked.clear();
+        curCup = curCup->next;
+        Node* test = curCup;
+        // cout<<"After 1M: "<<g.c.indexVec[1000000]->next->val<<endl;
+        // for (int i = 0;i<10;i++) {
+        //     cout<<test->val<<endl;
+        //     test=test->next;
+        // }   
+        // while (cur!=nullptr) {
+        //     cout<<cur->val<<endl;
+        //     cur=cur->next;
+        // }
     }
-    string res="";
-    visited.insert(1);
-    start = mod(++start,n);
-    while (visited.count(g.c.cups[start])==0) {
-        res+=to_string(g.c.cups[start]);
-        visited.insert(g.c.cups[start]);
-        start= mod(++start,n);
+    if (part2) {
+        ll res = 1;
+        g.destNode = g.c.indexVec[1];
+        cout<<"the two nodes after 1"<<endl;
+        for (int i = 0;i<2;i++) {
+            g.destNode = g.destNode->next;
+            cout<<g.destNode->val<<endl;
+            res*=g.destNode->val;
+        }
+        cout<<res<<endl;
+    } else {
+        string res = "";
+        g.destNode = g.c.indexVec[1];
+        for (int i = 0;i<8;i++) {
+            g.destNode = g.destNode->next;
+            res+=to_string(g.destNode->val);
+        }
+        cout<<res<<endl;
     }
-    return res;
 }
 
 int main() {
-
+    auto start = high_resolution_clock::now();
     freopen("inputs/big.txt","r",stdin);
     string input;
-    Cups c;
+    Cups c = Cups();
     getline(cin,input);
+    Node* node = new Node;
+    Node* next;
+    Node* head = node;
+    c.cups = node;
+    int i = 0;
     for (char ch : input) {
-        c.cups.push_back(ch-'0');
+        i++;
+        next = new Node;
+        node->val=ch-'0';
+        // Want the next to be nullptr for the last one. 
+        node->next=next;
+        c.indexVec[node->val]=node;
+        if (i==input.size()) {
+            continue;
+        }
+        node= node->next;
     }
+    node->next=head;
+    c.cups=head;
     g.c=c;
-    g.move=0;
-    g.curIndex = 0;
-    cout<<playGame()<<endl;
+    // part 1
+    cout<<"Part 1: ";
+    playGame(false);
+    // part 2
+    cout<<"Part 2: ";
+    playGame(true);
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop-start);
+    cout<<"Time: "<<duration.count()<<endl;
     return 0;
 }

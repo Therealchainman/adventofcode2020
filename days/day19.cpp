@@ -192,7 +192,7 @@ int solve(message m) {
 }
 
 int main() {
-    freopen("inputs/big.txt","r",stdin);
+    freopen("inputs/small2.txt","r",stdin);
     string input;
     message m;
     while (getline(cin,input)) {
