@@ -47,16 +47,9 @@ void playGame(bool part2) {
     Node* curNode;
     Node* lastNode;
     Node* afterDestNode;
-    // cout<<g.c.indexVec[1000000]->next->val<<endl;
     for (int j = 0;j<moves;j++) {
         // Removing my three nodes
-        // cout<<"move: "<<j+1<<endl;
-
         curNode = curCup->next;
-        // if (j>249990) {
-        //     cout<<"Current cup: "<<curCup->val<<endl;
-        //     cout<<"Next node:" <<curNode->val<<endl;
-        // }
         g.rmNode = curNode;
         for (int i = 0;i<3;i++) {
             g.picked.insert(curNode->val);
@@ -79,14 +72,7 @@ void playGame(bool part2) {
         }
         // Insert the three nodes after the destination node. 
         g.destNode = g.c.indexVec[g.destVal];
-
         afterDestNode = g.destNode->next;
-        // if (j>249990) {
-        //     cout<<"Destination node: "<<g.destNode->val<<endl;
-        //     cout<<"Last removed node: "<<lastNode->val<<endl;
-        //     cout<<"Node after destinaton: "<<afterDestNode->val<<endl;
-        // }
-
         g.destNode->next = g.rmNode;
         while (g.rmNode->next!=nullptr) {
             g.rmNode = g.rmNode->next;
@@ -95,20 +81,10 @@ void playGame(bool part2) {
         g.picked.clear();
         curCup = curCup->next;
         Node* test = curCup;
-        // cout<<"After 1M: "<<g.c.indexVec[1000000]->next->val<<endl;
-        // for (int i = 0;i<10;i++) {
-        //     cout<<test->val<<endl;
-        //     test=test->next;
-        // }   
-        // while (cur!=nullptr) {
-        //     cout<<cur->val<<endl;
-        //     cur=cur->next;
-        // }
     }
     if (part2) {
         ll res = 1;
         g.destNode = g.c.indexVec[1];
-        cout<<"the two nodes after 1"<<endl;
         for (int i = 0;i<2;i++) {
             g.destNode = g.destNode->next;
             cout<<g.destNode->val<<endl;
